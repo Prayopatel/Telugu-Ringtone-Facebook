@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg">
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:adSize="FULL_BANNER"
+        app:adUnitId="@string/banner_ad"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+    <ImageButton
+        android:id="@+id/myRingtone"
+        android:layout_width="163dp"
+        android:layout_height="68dp"
+        android:layout_marginBottom="16dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_set_ringtone"
+        app:layout_constraintBottom_toTopOf="@+id/myNotification"
+        app:layout_constraintEnd_toStartOf="@+id/myAlarm"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/myAlarm"
+        android:layout_width="163dp"
+        android:layout_height="68dp"
+        android:layout_below="@+id/myRingtone"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_set_alarm"
+        app:layout_constraintBottom_toBottomOf="@+id/myRingtone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/myRingtone" />
+
+    <ImageButton
+        android:id="@+id/myNotification"
+        android:layout_width="163dp"
+        android:layout_height="68dp"
+        android:layout_below="@+id/myContact"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="90dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_set_notification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/myContact"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/myContact"
+        android:layout_width="163dp"
+        android:layout_height="68dp"
+        android:layout_below="@+id/myAlarm"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_set_contact_ringtone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/myNotification"
+        app:layout_constraintTop_toTopOf="@+id/myNotification" />
+
+    <ImageButton
+        android:id="@+id/myPlayPause"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_below="@+id/myNotification"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_play"
+        app:layout_constraintBottom_toTopOf="@+id/myRingtone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
