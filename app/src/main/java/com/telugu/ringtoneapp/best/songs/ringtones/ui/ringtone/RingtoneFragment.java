@@ -24,11 +24,13 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.facebook.ads.AdSize;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.karumi.dexter.Dexter;
@@ -37,6 +39,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.DexterError;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.telugu.ringtoneapp.best.songs.ringtones.Adconfig;
 import com.telugu.ringtoneapp.best.songs.ringtones.R;
 
 import java.io.File;
@@ -57,9 +60,9 @@ public class RingtoneFragment extends Fragment {
     int position;
     private String rintoneTitle;
     private int song;
-    private AdView mAdView;
 
 
+    private com.facebook.ads.AdView adViewfacebook;
 
 
 
@@ -70,9 +73,14 @@ public class RingtoneFragment extends Fragment {
         inflate.setClickable(true);
         inflate.setFocusable(true);
 
-        mAdView = inflate.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+
+        adViewfacebook = new com.facebook.ads.AdView(getContext(), Adconfig.BANNER, AdSize.BANNER_HEIGHT_50);
+
+
+        LinearLayout adContainer = (LinearLayout) inflate.findViewById(R.id.banner_container1);
+        adContainer.addView(adViewfacebook);
+
+        adViewfacebook.loadAd();
 
         this.position = getArguments().getInt("position");
         this.rintoneTitle = getArguments().getString("name");

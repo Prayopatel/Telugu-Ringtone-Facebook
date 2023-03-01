@@ -13,32 +13,31 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.InterstitialAd;
+import com.facebook.ads.InterstitialAdListener;
 import com.karumi.dexter.BuildConfig;
+import com.telugu.ringtoneapp.best.songs.ringtones.Adconfig;
 import com.telugu.ringtoneapp.best.songs.ringtones.R;
 import com.telugu.ringtoneapp.best.songs.ringtones.ui.list.RingtoneListFragment;
 
 
 public class HomeFragment extends Fragment {
     private String privacyUrl = "https://teluguringtone99.blogspot.com/2023/02/privacy-policy-celular-ringtone-built.html";
+    private AdView adViewfacebook;
+    private InterstitialAd interstitialAd;
 
-    private AdView mAdView;
-    private InterstitialAd mInterstitialAd;
     boolean isloaded = false;
     boolean noloaded = false;
     ProgressDialog progressDialog;
@@ -52,14 +51,15 @@ public class HomeFragment extends Fragment {
         View inflate = layoutInflater.inflate(R.layout.fragment_home, viewGroup, false);
         inflate.setClickable(true);
         inflate.setFocusable(true);
-        mAdView = inflate.findViewById(R.id.adView);
-        MobileAds.initialize(getContext(), new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
+        adViewfacebook = new com.facebook.ads.AdView(getContext(), Adconfig.BANNER, AdSize.BANNER_HEIGHT_50);
+        interstitialAd = new InterstitialAd(getContext(), Adconfig.INTERSTITIAL);
 
-        loadads();
+        LinearLayout adContainer = (LinearLayout) inflate.findViewById(R.id.banner_container);
+        adContainer.addView(adViewfacebook);
+        adViewfacebook.loadAd();
+
+        ShowFbInter();
+
         share=inflate.findViewById(R.id.share);
         rate=inflate.findViewById(R.id.idrate);
         privacy=inflate.findViewById(R.id.privacy);
@@ -106,13 +106,11 @@ public class HomeFragment extends Fragment {
 
 
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
         ((ImageButton) inflate.findViewById(R.id.nextButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public  void onClick(View view) {
+                ShowFbInter();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.homeFragment, new RingtoneListFragment()).addToBackStack(null).commitAllowingStateLoss();
-                showIntAds();
             }
         });
         return inflate;
@@ -120,59 +118,46 @@ public class HomeFragment extends Fragment {
 
 
 
+    public void ShowFbInter(){
+        InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
+            @Override
+            public void onInterstitialDisplayed(Ad ad) {
 
-    public void loadads() {
+            }
 
-        isloaded =false;
-        noloaded =false;
+            @Override
+            public void onInterstitialDismissed(Ad ad) {
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-        InterstitialAd.load(getContext(), getString(R.string.Interstitial), adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        isloaded = true;
-                        if (noloaded){
-                            progressDialog.dismiss();
-                            showIntAds();
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        mInterstitialAd = null;
-                    }
-                });
+            @Override
+            public void onError(Ad ad, AdError adError) {
+
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                interstitialAd.show();
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+
+            }
+        };
+        interstitialAd.loadAd(
+                interstitialAd.buildLoadAdConfig()
+                        .withAdListener(interstitialAdListener)
+                        .build());
     }
 
 
-    public void showIntAds(){
-        if (mInterstitialAd != null){
-            mInterstitialAd.show(getActivity());
-            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    super.onAdDismissedFullScreenContent();
-                    mInterstitialAd = null;
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.homeFragment, new RingtoneListFragment()).addToBackStack(null).commitAllowingStateLoss();
 
-                }
-
-                @Override
-                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                    super.onAdFailedToShowFullScreenContent(adError);
-                    mInterstitialAd = null;
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.homeFragment, new RingtoneListFragment()).addToBackStack(null).commitAllowingStateLoss();
-
-                }
-            });
-        }
-    };
 
 
 
